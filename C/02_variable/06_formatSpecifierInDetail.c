@@ -7,6 +7,8 @@ int main()
 
     // int
 
+    // atleast 
+
     int num = 20000000;
     printf("%d", num);
 

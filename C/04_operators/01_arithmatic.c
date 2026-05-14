@@ -32,5 +32,5 @@ int main()
 
     printf("\nmodulo %d", num1 % num2);
 
-       return 0;
+    return 0;
 }

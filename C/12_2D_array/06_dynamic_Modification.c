@@ -15,9 +15,10 @@ int main()
     printf("\nenter the col index ");
     scanf("%d", &colIndex);
 
-    if ((int)rowIndex || (int)colIndex > 3)
+      if (rowIndex <= 0 || rowIndex >= 3 || colIndex <= 0 || colIndex >= 3)
     {
-        return printf("\nindex number can't be accessed");
+        printf("\nindex number can't be accessed");
+        return 0;
     }
 
     int value;
