@@ -28,15 +28,9 @@ int main()
 
     // now using function
 
-
-
-    // function invocation 
+    // function invocation
     sum(10, 20);
     sum(30, 40);
-
-
-
-    
 
     return 0;
 }
