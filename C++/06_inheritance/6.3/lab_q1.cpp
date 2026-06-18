@@ -171,7 +171,7 @@ int main()
         else if (choice == 2)
         {
 
-            if (count < 0)
+            if (count == 0)
             {
                 cout << "\n no employee data found " << endl;
             }
@@ -206,7 +206,7 @@ int main()
 
                     delete employees[index];
 
-                    for (int i = 0; i < count; i++)
+                    for (int i = index; i < count - 1; i++)
                     {
 
                         employees[i] = employees[i + 1];
@@ -230,9 +230,12 @@ int main()
 
     } while (choice != 4);
 
-    // delete employees;
+    for (int i = 0; i < count; i++)
+    {
 
-    // cout << "memory cleaned " << endl;
+        delete employees[i];
+        cout << "\nmemory cleaned " << endl;
+    }
 
     return 0;
 }
