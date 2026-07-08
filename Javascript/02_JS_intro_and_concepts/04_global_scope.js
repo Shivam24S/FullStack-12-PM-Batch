@@ -18,7 +18,6 @@ function checkGlobalScope() {
 
 checkGlobalScope();
 
-
 // hierchiery
 
 // const -> let -> var
