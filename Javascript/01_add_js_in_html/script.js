@@ -3,3 +3,7 @@ document.getElementById("login").addEventListener("click", () => {
 
   heading.innerText = `welcome user`;
 });
+
+
+
+console.log("good morning")
