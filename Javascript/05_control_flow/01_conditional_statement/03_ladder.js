@@ -17,3 +17,5 @@ if (marks >= 90 && marks <= 100) {
 } else {
   console.log("you have entered wrong marks");
 }
+
+
