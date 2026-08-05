@@ -73,3 +73,12 @@ console.log("student5", student5);
 console.log(student5.hasOwnProperty("name"));
 
 console.log(student5.hasOwnProperty("age"));
+
+
+
+// for in 
+
+
+for(let key in mountaineer){
+  console.log(key, mountaineer[key])
+}
