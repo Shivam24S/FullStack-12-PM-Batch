@@ -1,12 +1,17 @@
-function greet(name) {
-  console.log(`hi ${name} good morning...`);
-}
+// function greet(name) {
+//   console.log(`hi ${name} good morning...`);
+// }
 
-function greetUser(name, greet) {
-  console.log("fetching user detail...");
+// function greetUser(name, greet) {
+//   console.log("fetching user detail...");
 
-  greet(name);
-}
+//   greet(name);
+// }
 
 
-greetUser("dexter",greet)
+// greetUser("dexter",greet)
+
+
+
+
+
