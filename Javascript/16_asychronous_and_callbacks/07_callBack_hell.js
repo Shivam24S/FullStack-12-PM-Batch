@@ -74,7 +74,7 @@ const paymentStatus = (amt, cb) => {
   }
 };
 
-payment(15000, (err, amt) => {
+payment(5000, (err, amt) => {
   if (err) {
     return console.log(err.message);
   } else {
