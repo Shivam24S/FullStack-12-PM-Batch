@@ -69,19 +69,22 @@ function paymentStatus(amount) {
   });
 }
 
-payment(25000)
-  .then((amt) => {
-    
-    return checkBalance(amt);
-  })
-  .then((amt) => {
-    return paymentDeduct(amt);
-  })
-  .then((amt) => {
-    return paymentStatus(amt);
-  })
-  .catch((error) => {
-    console.log(error);
-  }).finally(()=>{
-    console.log("do you want to explore more ?")
-  })
+async function handlePayment() {
+  try {
+    const paymentStart = await payment(5000);
+
+    const verifyBalance = await checkBalance(paymentStart);
+
+    const deduction = await paymentDeduct(verifyBalance);
+
+    console.log("this will wait");
+
+    const status = await paymentStatus(deduction);
+
+    console.log("status", status);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+handlePayment();
