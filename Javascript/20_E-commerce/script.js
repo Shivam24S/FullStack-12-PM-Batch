@@ -85,6 +85,8 @@ const products = [
   },
 ];
 
+let LocalCartItem = JSON.parse(localStorage.getItem("localCart")) || [];
+
 function showProductList() {
   const productList = document.getElementById("product-list");
 
@@ -99,7 +101,7 @@ function showProductList() {
   <div class="card-body">
     <h5 class="card-title">${p.name}</h5>
     <p class="card-text">${p.price}</p>
-    <button class="btn btn-primary" >add to card</button>
+    <button class="btn btn-primary" onclick="addToCart(${p.id})" >add to card</button>
   </div>
 </div>
         
@@ -111,9 +113,27 @@ function showProductList() {
 
 showProductList();
 
+function addToCart(id) {
+  try {
+    let productItem = LocalCartItem.find((p) => p.id === id);
 
-// localStorage 
+    if (productItem) {
+      let productQty = productItem.qty++;
 
+      console.log("qty", productQty);
+    } else {
+      productItem = products.find((p) => p.id === id);
 
+      LocalCartItem.push({ ...productItem, qty: 1 });
+    }
 
+    updateLocalStorage();
+    alert("product added");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
+function updateLocalStorage() {
+  localStorage.setItem("localCart", JSON.stringify(LocalCartItem));
+}
