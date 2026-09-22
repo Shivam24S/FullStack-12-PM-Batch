@@ -1,5 +1,18 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.cartProductImage {
+  height: 100px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 20px;
+}
+
+
+.modal-content{
+  width: 1900px;
+
 }

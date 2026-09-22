@@ -137,3 +137,44 @@ function addToCart(id) {
 function updateLocalStorage() {
   localStorage.setItem("localCart", JSON.stringify(LocalCartItem));
 }
+
+function showCartModal() {
+  const cartModal = document.getElementById("cartModal");
+
+  const modal = new bootstrap.Modal(cartModal);
+
+  modal.show();
+
+  showCartData();
+}
+
+function showCartData() {
+  const tableBody = document.getElementById("table-body");
+
+  tableBody.innerHTML = "";
+
+  LocalCartItem.forEach((p, index) => {
+    tableBody.innerHTML += `
+    
+    <tr key={index}>
+    <td>${index + 1}</td>
+    <td><img class=cartProductImage src=${p.image}  alt=${p.name} ><img/></td>
+    <td>${p.name}</td>
+    <td>${p.price}</td>
+    <td>
+    <div class="d-flex justify-content-center align-items-center gap-2"   >
+    <button  class="btn btn-success" >+</button>
+    <h5>${p.qty}</h5>
+     <button  class="btn btn-warning" >-</button>
+    </div>
+    </td>
+    <td>
+    <h5>₹${p.qty * p.price} </h5>
+    </td>
+    <td>
+    <button class="btn btn-danger"> Remove</button>
+    </td>
+    </tr>
+    `;
+  });
+}
