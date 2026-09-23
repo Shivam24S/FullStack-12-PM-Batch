@@ -136,6 +136,10 @@ function addToCart(id) {
 
 function updateLocalStorage() {
   localStorage.setItem("localCart", JSON.stringify(LocalCartItem));
+
+  showCartData();
+
+  grandTotal();
 }
 
 function showCartModal() {
@@ -146,6 +150,7 @@ function showCartModal() {
   modal.show();
 
   showCartData();
+  grandTotal();
 }
 
 function showCartData() {
@@ -163,18 +168,85 @@ function showCartData() {
     <td>${p.price}</td>
     <td>
     <div class="d-flex justify-content-center align-items-center gap-2"   >
-    <button  class="btn btn-success" >+</button>
+    <button  class="btn btn-success" onClick="increaseQty(${p.id})" >+</button>
     <h5>${p.qty}</h5>
-     <button  class="btn btn-warning" >-</button>
+     <button  class="btn btn-warning" onClick="decreaseQty(${p.id})" >-</button>
     </div>
     </td>
     <td>
     <h5>₹${p.qty * p.price} </h5>
     </td>
     <td>
-    <button class="btn btn-danger"> Remove</button>
+    <button class="btn btn-danger"  onClick="removeProduct(${p.id})" > Remove</button>
     </td>
     </tr>
     `;
   });
+}
+
+function increaseQty(id) {
+  try {
+    const product = LocalCartItem.find((p) => p.id === id);
+
+    if (product) {
+      product.qty++;
+    }
+
+    updateLocalStorage();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function decreaseQty(id) {
+  try {
+    const index = LocalCartItem.findIndex((p) => p.id === id);
+
+    if (index === -1) {
+      throw new Error("product not found");
+    }
+
+    const product = LocalCartItem.find((p) => p.id === id);
+
+    if (product) {
+      product.qty--;
+    }
+
+    if (product.qty === 0) {
+      LocalCartItem.splice(index, 1);
+    }
+
+    updateLocalStorage();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// function removeProduct(id) {
+//   try {
+//     LocalCartItem = LocalCartItem.filter((p) => p.id !== id);
+//     updateLocalStorage();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+function removeProduct(id) {
+  const index = LocalCartItem.findIndex((p) => p.id === id);
+
+  LocalCartItem.splice(index, 1);
+
+  updateLocalStorage();
+}
+
+function grandTotal() {
+  const total = document.getElementById("GrandTotal");
+
+  total.innerHTML = "";
+
+  const totalAmounts = LocalCartItem.reduce((acc, curr) => {
+    return (acc += curr.price * curr.qty);
+  }, 0);
+
+  total.innerHTML = `<h5>${totalAmounts}</h5>`;
 }
