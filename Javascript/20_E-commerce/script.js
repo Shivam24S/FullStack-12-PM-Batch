@@ -248,5 +248,66 @@ function grandTotal() {
     return (acc += curr.price * curr.qty);
   }, 0);
 
-  total.innerHTML = `<h5>${totalAmounts}</h5>`;
+  total.innerHTML = `<h5> ₹${totalAmounts}</h5>`;
+}
+
+function checkOut() {
+  try {
+    if (LocalCartItem.length === 0) {
+      alert("add item in cart");
+    } else {
+      LocalCartItem = [];
+
+      alert("your order placed successfully");
+
+      updateLocalStorage();
+
+      const cartModal = document.getElementById("cartModal");
+
+      let modal = bootstrap.Modal.getInstance(cartModal);
+
+      if (modal) {
+        modal.hide();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function showAddProductModal() {
+  const addProductModal = document.getElementById("addProduct");
+
+  const modal = new bootstrap.Modal(addProductModal);
+
+  modal.show();
+}
+
+function addProduct() {
+  const productName = document.getElementById("productName").value.trim();
+  const productImage = document.getElementById("productImage").value.trim();
+  const productPrice = document.getElementById("productPrice").value.trim();
+
+  if (!productName || !productImage || !productPrice) {
+    alert("please add all product details");
+  }
+
+  const newProduct = {
+    id: new Date().getTime(),
+    name: productName,
+    price: productPrice,
+    image: productImage,
+  };
+
+  console.log("new", newProduct);
+
+  products.push(newProduct);
+
+  updateLocalStorage();
+
+  console.log("products", products);
+
+  alert("new product added successfully");
+
+  showProductList();
 }
