@@ -1,4 +1,4 @@
-const products = [
+let products = [
   {
     id: 1,
     name: "Wireless Headphones",
@@ -102,6 +102,8 @@ function showProductList() {
     <h5 class="card-title">${p.name}</h5>
     <p class="card-text">${p.price}</p>
     <button class="btn btn-primary" onclick="addToCart(${p.id})" >add to card</button>
+    <button class="btn btn-warning" onclick="updateProduct(${p.id})" >update</button>
+    <button class="btn btn-danger" onclick="deleteProduct(${p.id})" >Delete</button>
   </div>
 </div>
         
@@ -310,4 +312,28 @@ function addProduct() {
   alert("new product added successfully");
 
   showProductList();
+}
+
+function deleteProduct(id) {
+  const product = products.find((p) => p.id === id);
+
+  if (!product) {
+    throw new Error("failed to delete product");
+  }
+
+  alert("product deleted successfully");
+
+  products = products.filter((p) => p.id !== id);
+
+  showProductList();
+}
+
+function updateProduct(id) {
+  const updateModal = document.getElementById("updateProduct");
+
+  const modal = new bootstrap.Modal(updateModal);
+
+  modal.show();
+
+  const product = products.find((p) => p.id === id);
 }
