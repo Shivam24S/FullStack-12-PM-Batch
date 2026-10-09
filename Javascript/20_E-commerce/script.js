@@ -336,4 +336,43 @@ function updateProduct(id) {
   modal.show();
 
   const product = products.find((p) => p.id === id);
+
+  if (!product) {
+    alert("product not found");
+  }
+
+  document.getElementById("updateProductName").value = product.name;
+  document.getElementById("updateProductImage").value = product.image;
+  document.getElementById("updateProductPrice").value = product.price;
+
+  const index = products.findIndex((p) => p.id === id);
+
+  if (index === -1) {
+    alert("product not found");
+  }
+
+  const form = document.getElementById("updateProductForm");
+
+  form.onsubmit = function (e) {
+    e.preventDefault();
+
+    let newName = document.getElementById("updateProductName").value.trim();
+
+    let newImage = document.getElementById("updateProductImage").value.trim();
+
+    let newPrice = document.getElementById("updateProductPrice").value.trim();
+
+    products[index] = {
+      ...products[index],
+      name: newName,
+      price: newPrice,
+      image: newImage,
+    };
+
+    alert("product detail updated...");
+
+    modal.hide();
+
+    showProductList();
+  };
 }
