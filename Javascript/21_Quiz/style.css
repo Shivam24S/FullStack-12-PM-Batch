@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: conic-gradient(
+    from 90deg,
+    #dac5b3 0deg,
+    #dac5b3 27.692deg,
+    #c7bfad calc(27.692deg + 0.1deg),
+    #c7bfad 55.385deg,
+    #b0b8a5 calc(55.385deg + 0.1deg),
+    #b0b8a5 83.077deg,
+    #98ae9c calc(83.077deg + 0.1deg),
+    #98ae9c 110.769deg,
+    #81a291 calc(110.769deg + 0.1deg),
+    #81a291 138.462deg,
+    #6c9585 calc(138.462deg + 0.1deg),
+    #6c9585 166.154deg,
+    #5c8778 calc(166.154deg + 0.1deg),
+    #5c8778 193.846deg,
+    #527869 calc(193.846deg + 0.1deg),
+    #527869 221.538deg,
+    #4f6a5a calc(221.538deg + 0.1deg),
+    #4f6a5a 249.231deg,
+    #535c4a calc(249.231deg + 0.1deg),
+    #535c4a 276.923deg,
+    #5e4f3a calc(276.923deg + 0.1deg),
+    #5e4f3a 304.615deg,
+    #6e442a calc(304.615deg + 0.1deg),
+    #6e442a 332.308deg,
+    #833b1a calc(332.308deg + 0.1deg) 360deg
+  );
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+}
+
+.quiz-card{
+
+    width: 500px;
+    height: 500px;
+    
+}
+.btn{
+
+}
+
+
