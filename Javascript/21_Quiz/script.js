@@ -57,9 +57,48 @@ const quizQuestions = [
     correctAnswerIndex: 1,
   },
 ];
-
-const qns = document.getElementById("qns");
-
 let currentIndex = 0;
 
-qns.innerText = quizQuestions[currentIndex].question;
+const qnsNum = document.getElementById("qnsNum");
+
+const options = document.getElementById("options");
+
+function loadQuestion() {
+  const qns = document.getElementById("qns");
+
+  const currentQns = quizQuestions[currentIndex];
+
+  qns.innerText = currentQns.question;
+
+  qnsNum.innerText = `Qns ${currentIndex + 1} / ${quizQuestions.length}`;
+
+  options.innerHTML = "";
+
+  currentQns.options.forEach((opt, index) => {
+    let col = document.createElement("div");
+
+    col.classList.add("col-md-6");
+
+    let btn = document.createElement("button");
+
+    btn.classList.add("btn", "btn-outline-primary", "option-btn");
+
+    btn.innerText = opt;
+
+    options.appendChild(col);
+
+    col.appendChild(btn);
+
+    console.log("current QNs", currentQns);
+  });
+}
+
+loadQuestion();
+
+function nextQns() {
+  if (currentIndex < quizQuestions.length - 1) {
+    currentIndex++;
+  }
+
+  loadQuestion();
+}

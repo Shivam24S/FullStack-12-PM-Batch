@@ -38,14 +38,12 @@ body {
   width: 100%;
 }
 
-.quiz-card{
-
-    width: 500px;
-    height: 500px;
-    
+.quiz-card {
+  width: 500px;
+  height: 500px;
 }
-.btn{
-
+.option-btn {
+  height: 60px;
+  width: 200px;
+  margin-top: 20px;
 }
-
-
