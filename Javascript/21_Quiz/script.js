@@ -63,6 +63,14 @@ const qnsNum = document.getElementById("qnsNum");
 
 const options = document.getElementById("options");
 
+let score = 0;
+
+let selectedAns = null;
+
+let userAnswers = []
+
+
+
 function loadQuestion() {
   const qns = document.getElementById("qns");
 
@@ -85,6 +93,22 @@ function loadQuestion() {
 
     btn.innerText = opt;
 
+    btn.onclick = function () {
+      selectedAns = index;
+
+      console.log("selected answer", selectedAns);
+
+      userAnswers.push({
+        qns: currentQns.question,
+        userAnswers: selectedAns,
+        correctAnswer:currentQns.correctAnswerIndex
+      })
+
+      console.log("user answer",userAnswers)
+
+      nextQns();
+    };
+
     options.appendChild(col);
 
     col.appendChild(btn);
@@ -96,9 +120,32 @@ function loadQuestion() {
 loadQuestion();
 
 function nextQns() {
+  if (selectedAns === quizQuestions[currentIndex].correctAnswerIndex) {
+    score++;
+    console.log("marks", score);
+  }
+
   if (currentIndex < quizQuestions.length - 1) {
+    userAnswers.push({
+      qns:quizQuestions[currentIndex].question,
+      userAnswers:null,
+      correctAnswer:quizQuestions[currentIndex].correctAnswerIndex
+
+      
+    })
+    console.log("user answer",userAnswers)
     currentIndex++;
+
+
+  } else {
+    result();
   }
 
   loadQuestion();
+}
+
+function result() {
+  const result = document.getElementById("quiz-result");
+
+  result.innerText = `score ${score} / ${quizQuestions.length}`;
 }
