@@ -69,11 +69,17 @@ let selectedAns = null;
 
 let userAnswers = [];
 
-console.log("user Answer", userAnswers);
-
-let timer = "";
+let timer = null;
 
 let timeLeft = 30;
+
+const nextButton = document.getElementById("next-btn");
+const answerHint = document.getElementById("answer-hint");
+const timerElement = document.getElementById("timer");
+const progressBar = document.getElementById("progress-bar");
+const optionLabels = ["A", "B", "C", "D"];
+
+nextButton.addEventListener("click", nextQns);
 
 function loadQuestion() {
   const qns = document.getElementById("qns");
@@ -82,44 +88,49 @@ function loadQuestion() {
 
   qns.innerText = currentQns.question;
 
-  qnsNum.innerText = `Qns ${currentIndex + 1} / ${quizQuestions.length}`;
+  qnsNum.innerText = `Question ${currentIndex + 1} / ${quizQuestions.length}`;
+  progressBar.style.width = `${((currentIndex + 1) / quizQuestions.length) * 100}%`;
+  nextButton.disabled = true;
+  answerHint.innerText = "Select an answer to continue";
 
   options.innerHTML = "";
 
   currentQns.options.forEach((opt, index) => {
-    let col = document.createElement("div");
+    const btn = document.createElement("button");
 
-    col.classList.add("col-md-6");
-
-    let btn = document.createElement("button");
-
-    btn.classList.add("btn", "btn-outline-primary", "option-btn");
-
+    btn.classList.add("option-btn");
+    btn.type = "button";
     btn.innerText = opt;
+    btn.setAttribute("aria-label", `Option ${optionLabels[index]}: ${opt}`);
+
+    const optionKey = document.createElement("span");
+    optionKey.classList.add("option-key");
+    optionKey.innerText = optionLabels[index];
+    btn.prepend(optionKey);
 
     btn.onclick = function () {
       selectedAns = index;
-
-      console.log("selected answer", selectedAns);
-
-      console.log("user answer", userAnswers);
-
-      nextQns();
+      document.querySelectorAll(".option-btn").forEach((option) => {
+        option.classList.remove("selected");
+      });
+      btn.classList.add("selected");
+      nextButton.disabled = false;
+      answerHint.innerText = "Answer selected";
     };
 
-    options.appendChild(col);
-
-    col.appendChild(btn);
-
-    startTimer();
-
-    console.log("current QNs", currentQns);
+    options.appendChild(btn);
   });
+
+  startTimer();
 }
 
 loadQuestion();
 
 function nextQns() {
+  if (selectedAns === null) {
+    return;
+  }
+
   userAnswers.push({
     qns: quizQuestions[currentIndex].question,
     userSelected: selectedAns,
@@ -129,83 +140,88 @@ function nextQns() {
 
   if (selectedAns === quizQuestions[currentIndex].correctAnswerIndex) {
     score++;
-    console.log("marks", score);
   }
 
   if (currentIndex < quizQuestions.length - 1) {
-    console.log("user answer", userAnswers);
     selectedAns = null;
-
     currentIndex++;
+    loadQuestion();
   } else {
     result();
   }
-
-  loadQuestion();
 }
 
 function startTimer() {
-  const timerElement = document.getElementById("timer");
-
-  timerElement.innerHTML = `Time Left ${timeLeft} `;
-
-  timeLeft = 30;
-
   clearInterval(timer);
-
+  timeLeft = 30;
+  timerElement.classList.remove("is-urgent");
+  timerElement.innerText = `${timeLeft}s`;
   timer = setInterval(() => {
     timeLeft--;
-
-    timerElement.innerHTML = `Time Left ${timeLeft} `;
+    timerElement.innerText = `${timeLeft}s`;
+    if (timeLeft <= 5) {
+      timerElement.classList.add("is-urgent");
+    }
 
     if (timeLeft === 0) {
-      selectedAns = null;
-
-      nextQns();
-      loadQuestion();
+      clearInterval(timer);
+      answerTimedOut();
     }
   }, 1000);
 }
 
+function answerTimedOut() {
+  const currentQns = quizQuestions[currentIndex];
+
+  userAnswers.push({
+    qns: currentQns.question,
+    userSelected: selectedAns,
+    options: currentQns.options,
+    correctAnswer: currentQns.correctAnswerIndex,
+  });
+
+  if (selectedAns === currentQns.correctAnswerIndex) {
+    score++;
+  }
+
+  if (currentIndex < quizQuestions.length - 1) {
+    currentIndex++;
+    selectedAns = null;
+    loadQuestion();
+  } else {
+    result();
+  }
+}
+
 function result() {
+  clearInterval(timer);
   const result = document.getElementById("quiz-card");
 
-  result.innerHTML = "";
-
   result.innerHTML = `
-
-  <h1 class="text-center mt-2" >Quiz Result </h1>
-
-  <h3 class="text-center" > Score ${score}/${quizQuestions.length} <h3/>
-
-  <h3 class="text-center" >Review Summary</h3>
-
-  <div class="mt-4">
-
-  <ul class="list-group">
-  
-  ${userAnswers.map((qns, index) => {
-    return `
-    
-    <li class="list-group-item">
-    
-    <h5 class="text-center">
-    Qns No:- ${index + 1} ${qns.qns}
-    </h5>
-
-    <h5 class="text-center">Your Answer :- ${qns.userSelected !== null ? qns.options[qns.userSelected] : "not selected"} </h5>
- 
-    <h6 class="text-center"> Correct Answer ${qns.options[qns.correctAnswer]} </h6>
-
-    </li>
-    
-    `;
-  })}
-  
-  
-  </ul>
-  
-  </div>
-  
+    <div class="result-view">
+      <div class="result-heading">
+        <span class="brand-mark" aria-hidden="true">&#10003;</span>
+        <p class="eyebrow">Quiz complete</p>
+        <h2>Nice work!</h2>
+        <p class="score">You scored ${score} / ${quizQuestions.length}</p>
+      </div>
+      <div class="review-list">
+        ${userAnswers.map((answer, index) => `
+          <article class="review-item">
+            <p class="review-question">${index + 1}. ${answer.qns}</p>
+            <p class="review-answer">
+              Your answer: ${answer.userSelected !== null ? answer.options[answer.userSelected] : "Not selected"}
+              <br />
+              Correct answer: <strong>${answer.options[answer.correctAnswer]}</strong>
+            </p>
+          </article>
+        `).join("")}
+      </div>
+      <button class="restart-btn" type="button" onclick="restartQuiz()">Try again <span aria-hidden="true">&rarr;</span></button>
+    </div>
   `;
+}
+
+function restartQuiz() {
+  window.location.reload();
 }
