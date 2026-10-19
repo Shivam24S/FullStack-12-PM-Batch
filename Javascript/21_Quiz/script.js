@@ -67,9 +67,13 @@ let score = 0;
 
 let selectedAns = null;
 
-let userAnswers = []
+let userAnswers = [];
 
+console.log("user Answer", userAnswers);
 
+let timer = "";
+
+let timeLeft = 30;
 
 function loadQuestion() {
   const qns = document.getElementById("qns");
@@ -98,13 +102,7 @@ function loadQuestion() {
 
       console.log("selected answer", selectedAns);
 
-      userAnswers.push({
-        qns: currentQns.question,
-        userAnswers: selectedAns,
-        correctAnswer:currentQns.correctAnswerIndex
-      })
-
-      console.log("user answer",userAnswers)
+      console.log("user answer", userAnswers);
 
       nextQns();
     };
@@ -113,6 +111,8 @@ function loadQuestion() {
 
     col.appendChild(btn);
 
+    startTimer();
+
     console.log("current QNs", currentQns);
   });
 }
@@ -120,23 +120,23 @@ function loadQuestion() {
 loadQuestion();
 
 function nextQns() {
+  userAnswers.push({
+    qns: quizQuestions[currentIndex].question,
+    userSelected: selectedAns,
+    options: quizQuestions[currentIndex].options,
+    correctAnswer: quizQuestions[currentIndex].correctAnswerIndex,
+  });
+
   if (selectedAns === quizQuestions[currentIndex].correctAnswerIndex) {
     score++;
     console.log("marks", score);
   }
 
   if (currentIndex < quizQuestions.length - 1) {
-    userAnswers.push({
-      qns:quizQuestions[currentIndex].question,
-      userAnswers:null,
-      correctAnswer:quizQuestions[currentIndex].correctAnswerIndex
+    console.log("user answer", userAnswers);
+    selectedAns = null;
 
-      
-    })
-    console.log("user answer",userAnswers)
     currentIndex++;
-
-
   } else {
     result();
   }
@@ -144,8 +144,68 @@ function nextQns() {
   loadQuestion();
 }
 
-function result() {
-  const result = document.getElementById("quiz-result");
+function startTimer() {
+  const timerElement = document.getElementById("timer");
 
-  result.innerText = `score ${score} / ${quizQuestions.length}`;
+  timerElement.innerHTML = `Time Left ${timeLeft} `;
+
+  timeLeft = 30;
+
+  clearInterval(timer);
+
+  timer = setInterval(() => {
+    timeLeft--;
+
+    timerElement.innerHTML = `Time Left ${timeLeft} `;
+
+    if (timeLeft === 0) {
+      selectedAns = null;
+
+      nextQns();
+      loadQuestion();
+    }
+  }, 1000);
+}
+
+function result() {
+  const result = document.getElementById("quiz-card");
+
+  result.innerHTML = "";
+
+  result.innerHTML = `
+
+  <h1 class="text-center mt-2" >Quiz Result </h1>
+
+  <h3 class="text-center" > Score ${score}/${quizQuestions.length} <h3/>
+
+  <h3 class="text-center" >Review Summary</h3>
+
+  <div class="mt-4">
+
+  <ul class="list-group">
+  
+  ${userAnswers.map((qns, index) => {
+    return `
+    
+    <li class="list-group-item">
+    
+    <h5 class="text-center">
+    Qns No:- ${index + 1} ${qns.qns}
+    </h5>
+
+    <h5 class="text-center">Your Answer :- ${qns.userSelected !== null ? qns.options[qns.userSelected] : "not selected"} </h5>
+ 
+    <h6 class="text-center"> Correct Answer ${qns.options[qns.correctAnswer]} </h6>
+
+    </li>
+    
+    `;
+  })}
+  
+  
+  </ul>
+  
+  </div>
+  
+  `;
 }
