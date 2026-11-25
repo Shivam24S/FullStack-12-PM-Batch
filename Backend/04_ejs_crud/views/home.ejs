@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>add</title>
+</head>
+
+<body>
+
+    <h1>this is home page</h1>
+
+    <!-- js expression -->
+    <% %>
+
+        <!-- when you want to display some value then use this  -->
+        <%= %>
+
+
+            <!-- studentList.forEach((s)=>{
+
+    }) -->
+
+            <ul>
+                <%studentList.forEach((s)=>{%>
+
+                    <li>
+                        <%= s.id%>
+                        <%= s.name%>
+                    </li>
+
+
+                    <%})%>
+            </ul>
+
+
+
+            <a href="/add">add</a>
+
+
+</body>
+
+</html>
